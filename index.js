@@ -1,5 +1,3 @@
-// index.js
-
 const CLOCKS = [
   { city: 'Johannesburg', tz: 'Africa/Johannesburg', local: true },
   { city: 'London',       tz: 'Europe/London' },
@@ -185,6 +183,26 @@ const clockEl = document.getElementById('clock');
 
 let intervalId = null;
 
+function getDeviceTimeZone() {
+  try {
+    return Intl.DateTimeFormat().resolvedOptions().timeZone;
+  } catch (e) {
+    return 'UTC';
+  }
+}
+
+function addCurrentLocationOption() {
+  const tz = getDeviceTimeZone();
+  const readableName = tz.split('/').pop().replace(/_/g, ' ');
+
+  const option = document.createElement('option');
+  option.value = tz;
+  option.textContent = `Current Location (${readableName})`;
+  option.selected = true;
+
+  select.insertBefore(option, select.firstChild);
+}
+
 function formatLocationTime(timeZone, locationLabel) {
   const now = new Date();
 
@@ -219,6 +237,8 @@ function startClock(timeZone, locationLabel) {
   update();
   intervalId = setInterval(update, 1000);
 }
+
+addCurrentLocationOption();
 
 select.addEventListener('change', () => {
   const timeZone = select.value;
