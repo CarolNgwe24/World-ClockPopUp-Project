@@ -1,0 +1,270 @@
+/* style.css */
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg: #12151c;
+  --panel: #1b2029;
+  --panel-border: #2a303c;
+  --text: #e8e6de;
+  --text-dim: #8b93a1;
+  --amber: #ffb020;
+  --amber-dim: #7a5a1f;
+  --teal: #4fd1c5;
+  --night: #5b6478;
+  --font-display: 'IBM Plex Mono', 'Courier New', monospace;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --radius: 10px;
+  --flip-duration: 340ms;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  min-height: 100vh;
+}
+
+body {
+  background-image:
+    radial-gradient(1px 1px at 20% 30%, rgba(232,230,222,0.25) 0, transparent 40%),
+    radial-gradient(1px 1px at 70% 15%, rgba(232,230,222,0.18) 0, transparent 40%),
+    radial-gradient(1px 1px at 85% 60%, rgba(232,230,222,0.15) 0, transparent 40%),
+    radial-gradient(1px 1px at 40% 80%, rgba(232,230,222,0.15) 0, transparent 40%),
+    radial-gradient(1px 1px at 10% 65%, rgba(232,230,222,0.12) 0, transparent 40%);
+}
+
+main {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 56px 24px 40px;
+}
+
+/* Header */
+
+.masthead {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.eyebrow {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 14px;
+}
+
+.masthead h1 {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  letter-spacing: -0.02em;
+  margin: 0 0 12px;
+}
+
+.sub {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  color: var(--text-dim);
+  letter-spacing: 0.02em;
+}
+
+/* Grid */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+/* Clock card */
+
+.clock-card {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  padding: 22px 20px 18px;
+  border-top: 3px solid var(--night);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-top-color 180ms ease;
+}
+
+.clock-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.35);
+}
+
+.clock-card[data-period="day"] {
+  border-top-color: var(--teal);
+}
+
+.clock-card__top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.clock-card__city {
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.01em;
+}
+
+.clock-card__badge {
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--bg);
+  background: var(--amber);
+  border-radius: 3px;
+  padding: 2px 6px;
+}
+
+/* Flap digits */
+
+.clock-card__time {
+  --digit-size: 1.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.05em;
+  margin-bottom: 14px;
+  user-select: none;
+}
+
+.flap {
+  position: relative;
+  width: 0.72em;
+  height: 1.32em;
+  font-size: var(--digit-size);
+  font-family: var(--font-display);
+  font-weight: 500;
+  perspective: 300px;
+}
+
+.flap__card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform var(--flip-duration) cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.flap__card--flip {
+  transform: rotateX(-180deg);
+}
+
+.flap__face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #10131a;
+  border: 1px solid var(--panel-border);
+  border-radius: 4px;
+  color: var(--amber);
+  backface-visibility: hidden;
+}
+
+.flap__face--back {
+  transform: rotateX(180deg);
+}
+
+.flap__face::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: rgba(0,0,0,0.5);
+}
+
+.flap-colon {
+  font-family: var(--font-display);
+  font-size: var(--digit-size);
+  color: var(--amber-dim);
+  padding: 0 1px;
+  animation: blink 2s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0.25; }
+}
+
+/* Meta row */
+
+.clock-card__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  color: var(--text-dim);
+}
+
+.clock-card__period {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.clock-card__period .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--night);
+}
+
+.clock-card[data-period="day"] .dot {
+  background: var(--teal);
+  box-shadow: 0 0 6px var(--teal);
+}
+
+/* Footer */
+
+footer {
+  text-align: center;
+  padding: 32px 24px 48px;
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  border-top: 1px solid var(--panel-border);
+  margin-top: 40px;
+}
+
+footer a {
+  color: var(--amber);
+  text-decoration: none;
+}
+
+footer a:hover,
+footer a:focus-visible {
+  text-decoration: underline;
+}
+
+footer a:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+@media (max-width: 480px) {
+  .clock-card__time { --digit-size: 1.5rem; }
+  main { padding: 40px 16px 32px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flap__card { transition: none; }
+  .flap-colon { animation: none; }
+  .clock-card { transition: none; }
+}
